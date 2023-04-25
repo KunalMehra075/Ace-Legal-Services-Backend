@@ -15,27 +15,30 @@ require('dotenv').config()
 const PORT = process.env.PORT;
 
 //=============> MIDDLEWARES
-app.use(express.json())
 
-app.use(cors({ origin: "http://localhost:3000" }));
-// ,
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-//   allowedHeaders: [ 'Access-Control-Allow-Origin','Content-Type', 'Authorization', 'Access-Control-Allow-Credentials'],
-//   credentials: true
+app.use(cors({
+  origin: "http://localhost:3000",
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', "Authorization", "Access-Control-Allow-Credentials", "Access-Control-Allow-Origin"],
+  credentials: true
+}));
+app.use(express.json())
 
 //=============> Testing endpoint
 app.get('/', (req, res) => res.send({ Message: 'ALS server working fine' }))
 
 //=============> ROUTES
 
-app.use(
-  cookieSession({ name: "session", keys: ["lama"], maxAge: 24 * 60 * 60 * 100 })
-);
+app.use(cookieSession({
+  name: 'google-auth-session',
+  keys: ["key1", "key2"],
+}))
+
 app.use(passport.initialize());
 app.use(passport.session());
 
 //=============> Testing endpoint
-app.get('/', (req, res) => res.send({ Message: 'ALS server working fine' }))
+app.get('/', (req, res) => res.send({ Message: "Welcome to ALS-Backend Server" }))
 
 
 //=============> ROUTES
