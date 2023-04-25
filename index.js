@@ -1,6 +1,5 @@
 const express = require('express');
-const connectToMongo = require('./config/db');
-const cors = require('cors');
+const connection = require('./config/db');
 const UserRouter = require('./routers/user.router');
 const LawyerRouter = require('./routers/lawyer.router');
 const AdminRouter = require('./routers/admin.router');
@@ -9,6 +8,7 @@ const app = express();
 const passport = require("./config/google.auth");
 const cookieSession = require("cookie-session");
 const AppoinmtentRouter = require('./routers/appointment.router');
+const cors = require('cors');
 
 //=============> ENV VARIABLES
 require('dotenv').config()
@@ -54,7 +54,7 @@ app.use("/appointment", AppoinmtentRouter)
 //=============> CONNECTION
 app.listen(PORT, async () => {
   try {
-    await connectToMongo();
+    await connection
     console.log(`ALS backend running @ ${PORT}`)
   } catch (error) {
     console.log({ error: error.message })
