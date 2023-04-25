@@ -17,12 +17,11 @@ const PORT = process.env.PORT;
 //=============> MIDDLEWARES
 app.use(express.json())
 
-app.use(cors({
-  origin: "http://localhost:3000",
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Access-Control-Allow-Origin', 'Content-Type', 'Authorization', 'Access-Control-Allow-Credentials'],
-  credentials: true
-}));
+app.use(cors({ origin: "http://localhost:3000" }));
+// ,
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+//   allowedHeaders: [ 'Access-Control-Allow-Origin','Content-Type', 'Authorization', 'Access-Control-Allow-Credentials'],
+//   credentials: true
 
 //=============> Testing endpoint
 app.get('/', (req, res) => res.send({ Message: 'ALS server working fine' }))
