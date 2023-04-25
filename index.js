@@ -20,7 +20,7 @@ app.use(express.json())
 app.use(cors({
   origin: "https://acelegalservices.vercel.app",
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', "Authorization", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"],
+  allowedHeaders: [ 'Access-Control-Allow-Origin','Content-Type', 'Authorization', 'Access-Control-Allow-Credentials'],
   credentials: true
 }));
 
