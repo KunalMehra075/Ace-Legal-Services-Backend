@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 //==============> HANDLE WARNING MESSAGE
-mongoose.set('strictQuery', true);
+// mongoose.set('strictQuery', false);
 
 
 //==============> MONGOOSE CONNECTION
