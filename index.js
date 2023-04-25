@@ -18,9 +18,9 @@ const PORT = process.env.PORT;
 app.use(express.json())
 
 app.use(cors({
-  origin: "https://acelegalservices.vercel.app",
+  origin: "http://localhost:3000",
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: [ 'Access-Control-Allow-Origin','Content-Type', 'Authorization', 'Access-Control-Allow-Credentials'],
+  allowedHeaders: ['Access-Control-Allow-Origin', 'Content-Type', 'Authorization', 'Access-Control-Allow-Credentials'],
   credentials: true
 }));
 
