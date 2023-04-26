@@ -1,20 +1,18 @@
-const express = require('express');
-const connection = require('./config/db');
-const UserRouter = require('./routers/user.router');
+const AppoinmtentRouter = require('./routers/appointment.router');
 const LawyerRouter = require('./routers/lawyer.router');
-const AdminRouter = require('./routers/admin.router');
 const GoogleRouter = require("./routers/googleAuth.router")
-const app = express();
+const AdminRouter = require('./routers/admin.router');
+const UserRouter = require('./routers/user.router');
 const passport = require("./config/google.auth");
 const cookieSession = require("cookie-session");
-const AppoinmtentRouter = require('./routers/appointment.router');
+const connection = require('./config/db');
+const express = require('express');
 const cors = require('cors');
 
-//=============> ENV VARIABLES
 require('dotenv').config()
 const PORT = process.env.PORT;
 
-//=============> MIDDLEWARES
+const app = express();
 
 app.use(cors({
   origin: "https://acelegalservices.vercel.app",
@@ -22,12 +20,8 @@ app.use(cors({
   allowedHeaders: ['Content-Type', "Authorization", "Access-Control-Allow-Credentials", "Access-Control-Allow-Origin"],
   credentials: true
 }));
+
 app.use(express.json())
-
-//=============> Testing endpoint
-app.get('/', (req, res) => res.send({ Message: 'ALS server working fine' }))
-
-//=============> ROUTES
 
 app.use(cookieSession({
   name: 'google-auth-session',
@@ -37,11 +31,18 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-//=============> Testing endpoint
-app.get('/', (req, res) => res.send({ Message: "Welcome to ALS-Backend Server" }))
+
+app.get("/", (req, res) => {
+  try {
+    res.status(200).json({ Message: "Welcome to Ace-Legal-Services Backend" });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ Error: err })
+  }
+});
 
 
-//=============> ROUTES
+//? --------Routes------------->
 app.use('/user', UserRouter)
 app.use('/lawyer', LawyerRouter)
 app.use('/admin', AdminRouter)
@@ -49,13 +50,10 @@ app.use("/auth", GoogleRouter)
 app.use("/appointment", AppoinmtentRouter)
 
 
-
-
-//=============> CONNECTION
 app.listen(PORT, async () => {
   try {
     await connection
-    console.log(`ALS backend running @ ${PORT}`)
+    console.log(`ALS Server running at PORT : ${PORT}`)
   } catch (error) {
     console.log({ error: error.message })
   }

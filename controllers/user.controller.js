@@ -17,17 +17,17 @@ exports.createUser = (req, res) => {
     const { name, gender, phone, email, password } = req.body;
     let Users = UserModel.find({ email })
     if (Users.length > 0) {
-        return res.json({ Message: "You have Aready Signed Up , Please login" })
+        return res.status(201).json({ Message: "You have Aready Signed Up , Please login" })
     }
     bcrypt.hash(password, 10, async (err, hash) => {
         if (hash) {
             const instance = new UserModel({ name, gender, email, phone, password: hash, verified: false });
             await instance.save()
             sendOTPVerificationEmail(instance, res);
-            return res.json({ exist: false, success: true, Message: "Sign up Successfull" });
+            return res.status(200).json({ exist: false, success: true, Message: "Sign up Successfull" });
         } else {
             console.log(err);
-            return res.json({ exist: false, success: false, Message: "Sign Up Failed", err })
+            return res.status(400).json({ exist: false, success: false, Message: "Sign Up Failed", err })
         }
     })
 }
@@ -117,7 +117,7 @@ exports.verifyOTP = async (req, res) => {
                     await UserModel.findByIdAndUpdate({ _id: userId }, payload);
                     await UserOTP.deleteMany({ userId });
                     sendEmail(emailTemplate.signupSuccess());
-                    res.json({
+                    res.status(200).json({
                         status: 'VERIFIED',
                         msg: "Email Successfully Verified"
                     })
@@ -125,7 +125,7 @@ exports.verifyOTP = async (req, res) => {
             }
         }
     } catch (error) {
-        res.json({
+        res.status(400).json({
             status: 'FAILED',
             error: error.message
         })
@@ -151,7 +151,7 @@ exports.forgotPassword = async (req, res) => {
 
         await transporter.sendMail(mailOptions);
 
-        res.json({
+        res.status(200).json({
             msg: "Password change link is sended",
             Status: "Success",
             data: {
@@ -159,7 +159,7 @@ exports.forgotPassword = async (req, res) => {
             }
         })
     } catch (error) {
-        res.json(error)
+        res.status(400).json(error)
     }
 }
 exports.getaUserDataByEmail = async (req, res) => {
@@ -180,9 +180,9 @@ exports.getUserByID = async (req, res) => {
     let id = req.params.id;
     try {
         let user = await UserModel.findOne({ _id: id });
-        res.json({ Message: "User Data By Google Auth", user })
+        res.status(200).json({ Message: "User Data By Google Auth", user })
     } catch (error) {
-        res.send({ Message: "Some error in Backend" })
+        res.status(500).send({ Message: "Some error in Backend" })
     }
 }
 

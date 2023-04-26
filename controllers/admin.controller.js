@@ -37,7 +37,7 @@ exports.addAdmin = async (req, res) => {
         }
         const newPass = generatePassword();
         bcrypt.hash(newPass, 10, async (err, hash) => {
-            if (err) return res.json({ err: err.message });
+            if (err) return res.status(400).json({ err: err.message });
             payload['password'] = hash;
             let newAdmin = new AdminModel(payload);
             await newAdmin.save(newAdmin);
@@ -83,7 +83,7 @@ exports.addLawyer = async (req, res) => {
         }
         const newPass = generatePassword();
         bcrypt.hash(newPass, 10, async (err, hash) => {
-            if (err) return res.json({ err: err.message });
+            if (err) return res.status(500).json({ err: err.message });
             payload['password'] = hash;
             let newLawyer = new LawyerModel(payload);
             await newLawyer.save(newLawyer);
@@ -113,10 +113,10 @@ exports.bulkPostLawyer = async (req, res) => {
     let data = req.body
     try {
         await LawyerModel.insertMany(data)
-        res.json({ Messagge: "Inserted all Lawyers data" });
+        res.status(200).json({ Messagge: "Inserted all Lawyers data" });
     } catch (err) {
         console.log(err);
-        res.json({ Error: err })
+        res.status(500).json({ Error: err })
     }
 }
 
